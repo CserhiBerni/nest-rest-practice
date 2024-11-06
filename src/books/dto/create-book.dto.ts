@@ -14,5 +14,6 @@ export class CreateBookDto {
   isbn: string;
 
   @IsInt()
+  @IsNotEmpty()
   publishYear: number;
 }

@@ -37,29 +37,43 @@ export class BooksService {
   create(createBookDto: CreateBookDto) {
     const b: Book = {
       id: this.nextId,
-      title: createBookDto.title,
-      author: createBookDto.author,
-      isbn: createBookDto.isbn,
-      publishYear: createBookDto.publishYear,
-      reserved: false
+      ...createBookDto,
+      reserved: false,
     }
 
-    this.books.push(b)
+    this.books.push(b);
+    return b;
   }
 
   findAll() {
-    return `This action returns all books`;
+    return this.books;
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} book`;
+    return this.books.find(book => book.id == id);
   }
 
   update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+    const index = this.books.findIndex(book => book.id == id);
+    if (index == -1) return undefined;
+
+    const newBook = {
+      ...this.books[index],
+      ...updateBookDto,
+    }
+
+    this.books[index] = newBook;
+
+    return newBook;
   }
 
   remove(id: number) {
-    return `This action removes a #${id} book`;
+    const index = this.books.findIndex(book => book.id == id)
+    if (index == -1) {
+      return false;
+    }
+
+    this.books.splice(index, 1);
+    return true;
   }
 }
